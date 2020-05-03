@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-deployment
+  labels:
+    app: whyse-build-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whyse-build-agent
+  template:
+    metadata:
+      labels:
+        app: whyse-build-agent
+    spec:
+      containers:
+        - name: whyse-build-agent-container
+          image: {{vsts_agent_image}}
+          env:
+            - name: VSTS_TOKEN
+              value: njghwa7mdvyychcdozgtx2zvferzf4amjcpsqnwcc2om7jsqnfba
+            - name: VSTS_AGENT
+              value: build-agent-kube
+            - name: VSTS_ACCOUNT
+              value: whyse
+            - name: DOCKER_HOST
+              value: tcp://localhost:2375
+        - name: dind
+          image: docker:19-dind
+          env:
+            - name: DOCKER_DRIVER
+              value: overlay2
+            - name: DOCKER_TLS_CERTDIR
+              value: ""
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: dind-storage
+              mountPath: /var/lib/docker
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 2
+      volumes:
+        - name: dind-storage
+          emptyDir: {}
