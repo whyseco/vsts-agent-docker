@@ -9,6 +9,8 @@ RUN echo "deb https://download.mono-project.com/repo/ubuntu stable-xenial main" 
 RUN apt update
 RUN apt install mono-devel
 
+RUN apt-get install build-essential
+
 RUN set -ex \
  && curl -fL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/`uname -m`/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
  && tar --extract --file docker.tgz --strip-components 1 --directory /usr/local/bin \
