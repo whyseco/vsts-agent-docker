@@ -3,12 +3,10 @@ FROM microsoft/vsts-agent:ubuntu-16.04
 ENV DOCKER_CHANNEL stable
 ENV DOCKER_VERSION 19.03.8
 
-RUN apt-get install build-essential
-
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 RUN apt install apt-transport-https ca-certificates
 RUN apt update \
-    && apt install mono-devel
+    && apt install mono-devel build-essential
 
 RUN set -ex \
  && curl -fL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/`uname -m`/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
