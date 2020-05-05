@@ -6,7 +6,8 @@ ENV DOCKER_VERSION 19.03.8
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 RUN apt install apt-transport-https ca-certificates
 RUN apt update \
-    && apt install mono-devel build-essential
+    && apt install mono-devel build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
  && curl -fL "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/`uname -m`/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
